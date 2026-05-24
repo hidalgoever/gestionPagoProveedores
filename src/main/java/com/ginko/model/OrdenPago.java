@@ -32,7 +32,7 @@ public class OrdenPago {
     private String concepto;
 
     @CreationTimestamp
-    @Column(name = "fecha_creacion", nullable = false)
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 
     @ManyToOne
