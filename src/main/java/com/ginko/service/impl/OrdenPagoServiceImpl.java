@@ -10,6 +10,8 @@ import com.ginko.repo.IGenericRepo;
 import com.ginko.service.IOrdenPagoService;
 import com.ginko.util.EstadoValidar;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class OrdenPagoServiceImpl extends CRUDImpl<OrdenPago, Integer> implements IOrdenPagoService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrdenPagoServiceImpl.class);
 
     private final IOrdenPagoRepo repo;
     private final IProveedorRepo proveedorRepo;
@@ -64,11 +68,18 @@ public class OrdenPagoServiceImpl extends CRUDImpl<OrdenPago, Integer> implement
         Estado nuevo = findByIdEstado(ordenEstadoNuevo);
         Integer actual = orden.getEstado().getIdEstado();
         Integer dest = idNuevoEstado;
+        String nombreEstadoActual = orden.getEstado().getNombre();
+        String nombreEstadoNuevo = nuevo.getNombre();
         boolean ok = false;
         if (EstadoValidar.BORRADOR.getId().equals(actual)&& (EstadoValidar.APROBADA.getId().equals(dest) || EstadoValidar.RECHAZADA.getId().equals(dest))) ok = true;
         if (EstadoValidar.APROBADA.getId().equals(actual) && EstadoValidar.PAGADA.getId().equals(dest)) ok = true;
-        if (!ok) throw new IllegalStateException("Transición inválida de " + actual + " a " + dest);
-        
+        if (!ok) {
+            String msg = "Transición inválida de " + nombreEstadoActual + " a " + nombreEstadoNuevo;
+            logger.warn(msg);
+            throw new IllegalStateException(msg);
+        }
+
+        logger.info("Transición orden {}: {} -> {}", idOrdenPago, nombreEstadoActual, nombreEstadoNuevo);
         return nuevo; 
     }
     
