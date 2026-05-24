@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import io.swagger.v3.oas.annotations.Operation;
 
 import com.ginko.dto.EstadoDTO;
 import com.ginko.model.Estado;
@@ -24,6 +25,7 @@ public class EstadoController {
     private final ModelMapper mapper;
 
     @GetMapping
+    @Operation(summary = "findAllEstados", description = "Obtiene todos los estados")
     public ResponseEntity<List<EstadoDTO>> findAll() {        
         List<EstadoDTO> list = service.findAll().stream().map(this::convertToDto).toList();
 
@@ -31,6 +33,7 @@ public class EstadoController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "findEstadoById", description = "Obtiene un estado por id")
     public ResponseEntity<EstadoDTO> findById(@PathVariable("id") Integer id) {
         Estado obj = service.findById(id);
 
@@ -38,6 +41,7 @@ public class EstadoController {
     }
 
     @PostMapping
+    @Operation(summary = "saveEstado", description = "Crea un nuevo estado")
     public ResponseEntity<Void> save(@Valid @RequestBody EstadoDTO dto) {
         Estado obj = service.save(convertToEntity(dto));
 
@@ -47,6 +51,7 @@ public class EstadoController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "updateEstado", description = "Actualiza un estado existente")
     public ResponseEntity<EstadoDTO> update(@Valid @PathVariable("id") Integer id, @RequestBody EstadoDTO dto) {
         Estado obj = service.update(id, convertToEntity(dto));
 
@@ -54,6 +59,7 @@ public class EstadoController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "deleteEstado", description = "Elimina un estado por id")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         service.delete(id);
 

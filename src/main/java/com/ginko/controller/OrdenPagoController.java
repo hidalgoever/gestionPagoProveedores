@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import io.swagger.v3.oas.annotations.Operation;
 import com.ginko.dto.OrdenPagoDTO;
 import com.ginko.model.OrdenPago;
 import com.ginko.service.IOrdenPagoService;
@@ -25,13 +26,15 @@ public class OrdenPagoController {
     private final ModelMapper mapper;
 
     @GetMapping("/pageableAll")
-    public ResponseEntity<Page<OrdenPagoDTO>> getOrdenesPago(Pageable pageable) {
+        @Operation(summary = "getOrdenesPago", description = "Obtiene órdenes de pago con paginación")
+        public ResponseEntity<Page<OrdenPagoDTO>> getOrdenesPago(Pageable pageable) {
          Page<OrdenPagoDTO> page = service.findAll(pageable).map(this::convertToDto);
 
          return ResponseEntity.ok(page);       
     }
 
     @GetMapping("/pageableParameter/{idEstado}/{idProveedor}")
+    @Operation(summary = "getOrdenesPagoPorEstadoProveedor", description = "Obtiene órdenes de pago filtradas por estado y proveedor con paginación")
     public ResponseEntity<Page<OrdenPagoDTO>> getOrdenesPagoPorEstadoProveedor(@PathVariable("idEstado") Integer idEstado,@PathVariable("idProveedor") Integer idProveedor, Pageable pageable) {
         Page<OrdenPagoDTO> page = service.findByEstadoAndProveedor(idEstado,idProveedor,pageable).map(this::convertToDto);
         
@@ -40,6 +43,7 @@ public class OrdenPagoController {
     
 
     @GetMapping("/{id}")
+    @Operation(summary = "getOrdenPago", description = "Obtiene una orden de pago por id")
     public ResponseEntity<OrdenPagoDTO> getOrdenPago(@PathVariable("id") Integer id) {
         OrdenPago obj = service.findById(id);
 
@@ -47,7 +51,8 @@ public class OrdenPagoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> saveOrdenPago(@Valid @RequestBody OrdenPagoDTO dto) {
+    @Operation(summary = "guardarOrdenPago", description = "Crea una nueva orden de pago")
+    public ResponseEntity<Void> guardarOrdenPago(@Valid @RequestBody OrdenPagoDTO dto) {
         OrdenPago obj = service.save(convertToEntity(dto));
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdOrdenPago()).toUri();
@@ -56,13 +61,15 @@ public class OrdenPagoController {
     }
 
     @PutMapping({"/{idOrdenPago}"})
-    public ResponseEntity<OrdenPagoDTO> updateOrdenPago(@Valid @PathVariable("idOrdenPago") Integer id, @RequestBody OrdenPagoDTO dto) {
+    @Operation(summary = "actualizarOrdenPago", description = "Actualiza una orden de pago existente")
+    public ResponseEntity<OrdenPagoDTO> actualizarOrdenPago(@Valid @PathVariable("idOrdenPago") Integer id, @RequestBody OrdenPagoDTO dto) {
         OrdenPago obj = service.update(id, convertToEntity(dto));
 
         return ResponseEntity.ok(convertToDto(obj));
     }
 
     @PutMapping("/change-estado/{idOrdenPago}/{idEstado}")
+    @Operation(summary = "changeEstadoOrdenPago", description = "Cambia el estado de una orden de pago")
     public ResponseEntity<OrdenPagoDTO> changeEstado(@PathVariable("idOrdenPago") Integer id, @PathVariable("idEstado") Integer idEstado) {
         OrdenPago obj = service.changeEstado(id, idEstado);
 

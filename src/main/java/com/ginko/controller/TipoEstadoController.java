@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import io.swagger.v3.oas.annotations.Operation;
 import com.ginko.dto.TipoEstadoDTO;
 import com.ginko.model.TipoEstado;
 import com.ginko.service.ITipoEstadoService;
@@ -23,6 +24,7 @@ public class TipoEstadoController {
     private final ModelMapper mapper;
 
     @GetMapping
+    @Operation(summary = "findAllTipoEstados", description = "Obtiene todos los tipos de estado")
     public ResponseEntity<List<TipoEstadoDTO>> findAll() {        
         List<TipoEstadoDTO> list = service.findAll().stream().map(this::convertToDto).toList();
 
@@ -30,6 +32,7 @@ public class TipoEstadoController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "findTipoEstadoById", description = "Obtiene un tipo de estado por id")
     public ResponseEntity<TipoEstadoDTO> findById(@PathVariable("id") Integer id) {
         TipoEstado obj = service.findById(id);
 
@@ -37,6 +40,7 @@ public class TipoEstadoController {
     }
 
     @PostMapping
+    @Operation(summary = "saveTipoEstado", description = "Crea un nuevo tipo de estado")
     public ResponseEntity<Void> save(@Valid @RequestBody TipoEstadoDTO dto) {
         TipoEstado obj = service.save(convertToEntity(dto));
 
@@ -46,6 +50,7 @@ public class TipoEstadoController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "updateTipoEstado", description = "Actualiza un tipo de estado existente")
     public ResponseEntity<TipoEstadoDTO> update(@Valid @PathVariable("id") Integer id, @RequestBody TipoEstadoDTO dto) {
         TipoEstado obj = service.update(id, convertToEntity(dto));
 
@@ -53,6 +58,7 @@ public class TipoEstadoController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "deleteTipoEstado", description = "Elimina un tipo de estado por id")
     public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         service.delete(id);
 
