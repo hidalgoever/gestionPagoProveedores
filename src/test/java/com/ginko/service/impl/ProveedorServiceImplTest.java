@@ -2,7 +2,6 @@ package com.ginko.service.impl;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 import com.ginko.exception.DuplicateResourceException;
 import com.ginko.exception.ModelNotFoundException;
 import com.ginko.model.Estado;
@@ -15,10 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.Spy;
-
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
