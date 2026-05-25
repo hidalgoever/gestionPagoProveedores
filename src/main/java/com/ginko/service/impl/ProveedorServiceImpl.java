@@ -44,7 +44,9 @@ public class ProveedorServiceImpl extends CRUDImpl<Proveedor, Integer> implement
 
     @Override
     public Proveedor save(Proveedor proveedor) {
-        validateUniqueIdentificacionTributaria(proveedor);      
+        validateUniqueIdentificacionTributaria(proveedor); 
+        Estado est = findByIdEstadoAndTipoEstadoIdTipoEstado(proveedor.getEstado().getIdEstado(), TipoEstadoValidar.PROVEEDOR.getId());     
+        proveedor.setEstado(est);
         return  repo.save(proveedor);        
     }
 
