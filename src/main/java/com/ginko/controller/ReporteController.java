@@ -1,22 +1,20 @@
 package com.ginko.controller;
 
+import com.ginko.dto.OrdenPagoProximoVencerDTO;
 import com.ginko.dto.ReporteTotalPagadoDTO;
 import com.ginko.service.IReporteService;
+import com.ginko.util.Utilidades;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.util.List;
 
 @RestController
-@RequestMapping("/reportes")
+@RequestMapping("/reportesOrdenP")
 @Validated
 @RequiredArgsConstructor
 public class ReporteController {
@@ -30,26 +28,18 @@ public class ReporteController {
             @RequestParam @NotBlank(message = "fechaInicio es requerida") String fechaInicio,
             @RequestParam @NotBlank(message = "fechaFin es requerida") String fechaFin) {
 
-        LocalDateTime inicio = parseFecha(fechaInicio, false);
-        LocalDateTime fin = parseFecha(fechaFin, true);        
+        LocalDateTime inicio = Utilidades.parseFecha(fechaInicio, false);
+        LocalDateTime fin = Utilidades.parseFecha(fechaFin, true);        
 
         ReporteTotalPagadoDTO resultado = reporteService.totalPagadoProveedor(idProveedor, inicio, fin);
         return ResponseEntity.ok(resultado);
     }
 
-    private LocalDateTime parseFecha(String valor, boolean endOfDay) {
-        if (valor == null || valor.isBlank()) {
-            throw new IllegalArgumentException("La fecha no debe estar vacía");
-        }
-
-        try {
-            if (valor.length() <= 10) {
-                LocalDate fecha = LocalDate.parse(valor, DateTimeFormatter.ISO_LOCAL_DATE);
-                return endOfDay ? fecha.atTime(LocalTime.MAX) : fecha.atStartOfDay();
-            }
-            return LocalDateTime.parse(valor, DateTimeFormatter.ISO_DATE_TIME);
-        } catch (DateTimeParseException ex) {
-            throw new IllegalArgumentException("Formato de fecha inválido. Use yyyy-MM-dd o yyyy-MM-dd'T'HH:mm:ss");
-        }
+    @GetMapping("/ordenesProximasVencer")
+    @Operation(summary = "ordenesProximasVencer", description = "Obtiene órdenes de pago próximas a vencer en los próximos 3 días hábiles")
+    public ResponseEntity<List<OrdenPagoProximoVencerDTO>> obtenerOrdenesProximasAVencer() {
+        List<OrdenPagoProximoVencerDTO> resultado = reporteService.obtenerOrdenesProximasAVencer();
+        return ResponseEntity.ok(resultado);
     }
+    
 }

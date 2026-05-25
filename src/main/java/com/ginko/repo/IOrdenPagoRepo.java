@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface IOrdenPagoRepo extends IGenericRepo<OrdenPago, Integer> {
     Page<OrdenPago> findByEstadoIdEstadoAndProveedorIdProveedor(Integer idEstado, Integer idProveedor, Pageable pageable);
@@ -16,4 +17,8 @@ public interface IOrdenPagoRepo extends IGenericRepo<OrdenPago, Integer> {
     Double totalPagadoByProveedorAndFechaCreacionBetween(@Param("idProveedor") Integer idProveedor,
                                                            @Param("fechaInicio") LocalDateTime fechaInicio,
                                                            @Param("fechaFin") LocalDateTime fechaFin);
+
+    @Query("SELECT o FROM OrdenPago o WHERE o.estado.nombre = :estadoPendiente AND o.estado.nombre <> 'CANCELADA'")
+    List<OrdenPago> findProximasAVencer(@Param("estadoPendiente") String estadoPendiente);
+
 }
