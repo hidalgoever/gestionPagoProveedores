@@ -49,12 +49,12 @@ Proyecto Spring Boot para gestionar proveedores y órdenes de pago con reportes 
 
 La documentación interactiva está disponible en:
 
-- `http://localhost:8080/swagger-ui/index.html`
+- `http://localhost:8093/swagger-ui/index.html`
 
 ## Endpoints relevantes
 
 - `GET /reportesOrdenP/ordenesProximasVencer`
-- `GET /reportesOrdenP/totalPagadoProveedor?idProveedor={id}&fechaInicio={yyyy-MM-dd}&fechaFin={yyyy-MM-dd}`
+- `POST /ordenes`
 
 ## Decisiones de diseño
 
