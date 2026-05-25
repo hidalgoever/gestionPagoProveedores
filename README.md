@@ -79,3 +79,11 @@ No se pudo implementar porque se revisó al final y no hubo tiempo suficiente; n
 
 - El reporte de órdenes próximas a vencer se calcula sobre `fechaCreacion` y suma días hábiles para determinar la fecha de vencimiento.
 - La validación de parámetros de fecha utiliza `Utilidades.parseFecha` con formatos `yyyy-MM-dd` y `yyyy-MM-dd'T'HH:mm:ss`.
+
+Se crearon dos entidades que no estaban en el diseño inicial, las cuales son TipoEstado y Estado. Estas se crearon con el fin de darle un manejo mas centralizado, mantenible y escalabe al tema de los estados.
+
+Se utilizó la libreria lombok, para no escribir tanto codigo en las clases. Es decir
+en las entidades,dtos nos ahorramos los getters, setters y los constructores con parametros
+y sin parametros. Tambien nos ahorra codigo en la inyección de dependencias por constructor.
+
+Tambien se utilizó clases genericas para reutilizar codigo y que este no quedara tan acoplado.
