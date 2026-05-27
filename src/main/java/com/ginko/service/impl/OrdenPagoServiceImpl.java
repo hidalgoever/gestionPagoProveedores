@@ -10,6 +10,10 @@ import com.ginko.repo.IGenericRepo;
 import com.ginko.service.IOrdenPagoService;
 import com.ginko.util.EstadoValidar;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -126,5 +130,10 @@ public class OrdenPagoServiceImpl extends CRUDImpl<OrdenPago, Integer> implement
         orden.setEstado(transitionEstado(idOrdenPago, idEstado));
         return  repo.save(orden); 
     }
+
+    @Override
+    public List<OrdenPago> findOrdenesByFechaVigenciaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        return repo.findByFechaVigenciaBetween(fechaInicio, fechaFin); 
+    }    
     
 }

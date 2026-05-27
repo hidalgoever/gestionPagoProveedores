@@ -10,10 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import io.swagger.v3.oas.annotations.Operation;
+
+import com.ginko.dto.EstadoDTO;
 import com.ginko.dto.OrdenPagoDTO;
 import com.ginko.model.OrdenPago;
 import com.ginko.service.IOrdenPagoService;
 import java.net.URI;
+import java.util.List;
 
 
 
@@ -74,7 +77,17 @@ public class OrdenPagoController {
         OrdenPago obj = service.changeEstado(id, idEstado);
 
         return ResponseEntity.ok(convertToDto(obj));
-    }    
+    } 
+
+   @GetMapping("/ordenesVigencia")
+        @Operation(summary = "ordenesVigencia", description = "Obtiene órdenes de pago por fecha de vigencia entre dos fechas")
+        public ResponseEntity<List<OrdenPagoDTO>> getOrdenesPago( @RequestParam String fechaInicio,
+            @RequestParam String fechaFin) {
+        
+        List<OrdenPagoDTO> list = service.findAll().stream().map(this::convertToDto).toList();
+
+        return ResponseEntity.ok(list);
+    }
 
     private OrdenPagoDTO convertToDto(OrdenPago obj) {
         return mapper.map(obj, OrdenPagoDTO.class);

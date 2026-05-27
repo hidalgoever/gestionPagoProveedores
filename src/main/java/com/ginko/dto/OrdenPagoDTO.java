@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -29,4 +30,7 @@ public class OrdenPagoDTO {
 
     @NotNull(message = "El idEstado es requerido")
     private Integer idEstado;
+
+    
+     private Date fechaVigencia;
 }

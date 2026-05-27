@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -38,5 +39,8 @@ public class OrdenPago {
     @ManyToOne
     @JoinColumn(name = "id_estado", nullable = false)
     private Estado estado;
-    
+
+    @Column(name = "fecha_vigencia", nullable = true)
+    private Date fechaVigencia;
+
 }

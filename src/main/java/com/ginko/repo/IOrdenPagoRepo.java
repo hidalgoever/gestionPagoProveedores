@@ -21,4 +21,6 @@ public interface IOrdenPagoRepo extends IGenericRepo<OrdenPago, Integer> {
     @Query("SELECT o FROM OrdenPago o WHERE o.estado.nombre = :estadoPendiente AND o.estado.nombre <> 'CANCELADA'")
     List<OrdenPago> findProximasAVencer(@Param("estadoPendiente") String estadoPendiente);
 
+    List<OrdenPago> findByFechaVigenciaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
 }
